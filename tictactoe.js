@@ -25,6 +25,10 @@ exports.TicTacToe = class {
 
 
     act(pos){
+        if(this.gameState != OPEN){
+            console.log(`game already over`);
+            return;
+        }
         if(pos < 0){
             console.log(`ERROR: invalid pos:${pos}} player:${this.currentPlayer}}`);
             return;
@@ -135,14 +139,28 @@ exports.TicTacToe = class {
 
     //tic tac toe ai
     doAiTurn(){
-        if(this._checkForNearlyWon()){
+        //try to win
+        let attacPosition = this._checkForNearlyWon(this.currentPlayer);
+        if(attacPosition > 0){
+            console.log(`Ai: i won: playing ${attacPosition}`);
+            this.act(attacPosition);
             return; //need turn to hinder opponent from winning
         }
+
+        //try not to lose
+        let defendPosition = this._checkForNearlyWon();
+        if(defendPosition > 0){
+            console.log(`Ai: not so easy. blocking ${defendPosition}`);
+            this.act(defendPosition);
+            return; //need turn to hinder opponent from winning
+        }
+
+        //just play somewhere good
         let positions = this._findWiningPositions();
         if(positions.length > 0){
             this.act(positions[Math.floor(Math.random()* positions.length)]);
         }else{
-            //probabyl already draw , just fill empty spaces
+            //probably already draw , just fill empty spaces
             if(!this._findFirstEmpty()){
                 console.log(`Ai[${this.currentPlayer}}]: no turn possible`);
             }
@@ -197,8 +215,7 @@ exports.TicTacToe = class {
         return positions;
     }
 
-    _checkForNearlyWon(){
-        let player = this._otherPlayer();
+    _checkForNearlyWon(player = this._otherPlayer()){
         let pos = -1;
         for(let i=0; i < FIELD_SIZE*FIELD_SIZE; i+=FIELD_SIZE){
             let hasLine = 0;
@@ -209,10 +226,7 @@ exports.TicTacToe = class {
                 }
             }
             if(hasLine === 1 && this.field[pos] == EMPTY_FIELD ){
-                console.log(`Ai sees your idea:plays ${pos}`);
-
-                this.act(pos);
-                return true;
+                return pos;
             }
         }
 
@@ -226,9 +240,7 @@ exports.TicTacToe = class {
                 }
             }
             if(hasLine === 1 && this.field[pos] == EMPTY_FIELD){
-                console.log(`Ai: nobody wins against Ai:plays ${pos}`);
-                this.act(pos);
-                return true;
+                return pos;
             }
         }
         //check diagonals
@@ -241,9 +253,7 @@ exports.TicTacToe = class {
             }
         }
         if(diagonal === 1 && this.field[pos] == EMPTY_FIELD){
-            console.log(`Ai: cant win against me :plays ${pos}`);
-            this.act(pos);
-            return true;
+            return pos;
         }
         //top right -> bottom left
         diagonal = 0;
@@ -254,10 +264,8 @@ exports.TicTacToe = class {
             }
         }
         if(diagonal === 1 && this.field[pos] == EMPTY_FIELD){
-            console.log(`Ai: no no no :plays ${pos}`);
-            this.act(pos);
-            return true;
+            return pos;
         }
-        return false;
+        return -1;
     }
 }

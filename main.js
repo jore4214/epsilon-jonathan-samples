@@ -30,17 +30,19 @@ stdin.addListener('data', function(data) {
             ttt.doAiTurn();
             ttt.printGameState();
         }
+        ttt.initNewGame();
         console.log(`GameOver: ${ttt.gameState}`);
     }else{
-        console.log(data);
+
         let pos = parseInt(data);
         if(isNaN(pos)){
             console.log("that's no position! Try again")
             return;
         }
         if(pos >= 0 && pos < 9 ){
-            console.log(`Good turn!`);
+
             if(ttt.act(pos)){
+                console.log(`Good move!`);
                 console.log(`Ai plays`);
                 ttt.doAiTurn();
             }else{
