@@ -5,37 +5,34 @@ exports.Testframework = class {
     constructor(){
     }
 
-    AssertionException(expected,actual) {
-        this.message = ` expected ${expected} but is ${actual}`;
-        this.name = "AssertionException:";
-    }
-
     assertEquals(expected, actual){
        if(expected !== actual){
-           throw new AssertionException(expected,actual);
+           throw `Assertion failed: expected ${expected} but is ${actual}`;
        }
     }
 
     runTests(testClass){
         let test = new testClass();
-        let testOverview = `Tests of ${testClass}`;
-        for(let property in test){
+        let testOverview = `runTests:\n`;
+
+        let functions = Object.getOwnPropertyNames(testClass.prototype);
+
+        for(let property of functions){
 
             if(typeof test[property] === `function` &&  property.startsWith(`test`)){
 
+                //need new testclass to test each function to not have tests influence each other
+                let propertyTest = new testClass();
                 //run setup if available
                 try{
-                if(test.setup){
-                    test.setup();
+                if(propertyTest.setup && typeof propertyTest.setup === `function`){
+                    propertyTest.setup();
                 }
                 //call test
+                propertyTest[property]();
 
-                test[property]();
-                }catch (e if e instanceof AssertionException){
-                    testOverview += `Test: ${property} failed assertion: ${e.name}${e.message}\n`;
-                    continue;
                 }catch(e){
-                    testOverview += `Test: ${property} throws exception: ${e}\n`;
+                    testOverview += `Test: ${property} faield: ${e}\n`;
                     continue;
                 }
                 testOverview += `Test: ${property}: successful\n`;
