@@ -17,6 +17,11 @@ exports.TicTacToe = class {
         this.gameState = OPEN;
     }
 
+    get OPEN(){return OPEN;}
+    get PLAYER1_WON(){return PLAYER1_WON;}
+    get PLAYER2_WON(){return PLAYER2_WON;}
+    get DRAW(){return DRAW;}
+
     initNewGame(){
         this.field.fill(EMPTY_FIELD);
         this.currentPlayer = 1;

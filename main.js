@@ -20,13 +20,12 @@ const stdin = process.openStdin();
 stdin.addListener('data', function(data) {
     /* do your tic tac toe interactive magic here */
     data =  data.replace(`\n`,``).trim();
-
     if(data === "newGame"){
         ttt.initNewGame();
         console.log(`new game, old thrown away`)
     }else if(data === "aiGame"){
         ttt.initNewGame();
-        while(ttt.gameState === `open`){
+        while(ttt.gameState === ttt.OPEN){
             ttt.doAiTurn();
             ttt.printGameState();
         }
