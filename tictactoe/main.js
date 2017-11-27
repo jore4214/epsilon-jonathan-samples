@@ -35,7 +35,7 @@ stdin.addListener('data', function(data) {
 
         let pos = parseInt(data);
         if(isNaN(pos)){
-            console.log("that's no position! Try again")
+            console.log("that's no position or command! Try again")
             return;
         }
         if(pos >= 0 && pos < 9 ){

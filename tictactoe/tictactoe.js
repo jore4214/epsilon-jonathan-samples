@@ -28,7 +28,7 @@ exports.TicTacToe = class {
         this.gameState = OPEN;
     }
 
-
+    /***/
     act(pos){
         if(this.gameState != OPEN){
             console.log(`game already over`);
@@ -105,7 +105,7 @@ exports.TicTacToe = class {
         }
         //top right -> bottom left
         diagonal = true;
-        for(let i= FIELD_SIZE-1; i < FIELD_SIZE*FIELD_SIZE; i+=FIELD_SIZE-1){
+        for(let i= FIELD_SIZE-1; i < FIELD_SIZE*FIELD_SIZE-1; i+=FIELD_SIZE-1){
             if (this.field[i] != player){
                 diagonal = false;
                 break;
@@ -262,7 +262,7 @@ exports.TicTacToe = class {
         }
         //top right -> bottom left
         diagonal = 0;
-        for(let i= FIELD_SIZE-1; i < FIELD_SIZE*FIELD_SIZE; i+=FIELD_SIZE-1){
+        for(let i= FIELD_SIZE-1; i < FIELD_SIZE*FIELD_SIZE-1; i+=FIELD_SIZE-1){
             if (this.field[i] != player){
                 diagonal++;
                 pos = i;

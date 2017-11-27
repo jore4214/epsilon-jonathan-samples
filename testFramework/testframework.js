@@ -32,7 +32,7 @@ exports.Testframework = class {
                 propertyTest[property]();
 
                 }catch(e){
-                    testOverview += `Test: ${property} faield: ${e}\n`;
+                    testOverview += `Test: ${property} failed: ${e}\n`;
                     continue;
                 }
                 testOverview += `Test: ${property}: successful\n`;
